@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,30 +15,32 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
-    @NotBlank
+    @NotBlank(message = "USERNAME_NOT_BLANK")
     @Size(min = 6, message = "USERNAME_INVALID")
     String username;
 
-    @NotBlank
+    @NotBlank(message = "PASSWORD_NOT_BLANK")
     @Size(min = 6,message = "PASSWORD_INVALID")
     String password;
 
-    @NotBlank
+    @NotBlank(message = "FULLNAME_NOT_BLANK")
     String fullName;
 
-    @NotNull(message = "Giới tính không được để trống")
+    @NotNull(message = "GENDER_NOT_BLANK")
     Gender gender;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "EMAIL_NOT_BLANK")
+    @Email(message = "EMAIL_INVALID")
     String email;
 
-    @Pattern(regexp = "0\\d{9}", message = "Số điện thoại phải có đúng 10 chữ số và bắt đầu bằng 0")
+    @Pattern(regexp = "0\\d{9}", message = "PHONE_INVALID")
     String phone;
 
-    @Past
+    @Past(message = "DOB_INVALID")
     LocalDate dob;
 
-    @NotNull(message = "Role không được để trống")
+    @NotNull(message = "ROLE_NOT_BLANK")
     ERole role;
+
+    Set<Integer> warehouseIds;
 }

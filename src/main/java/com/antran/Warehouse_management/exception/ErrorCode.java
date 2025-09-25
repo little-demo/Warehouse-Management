@@ -35,6 +35,22 @@ public enum ErrorCode {
     LOCATION_NAME_NOT_BE_EMPTY(2011, "Tên vị trí không được để trống", HttpStatus.BAD_REQUEST),
     LOCATION_NAME_ALREADY_EXISTS(2012, "Tên vị trí đã tồn tại!", HttpStatus.BAD_REQUEST),
     LOCATION_NOT_EXISTED(2013, "Vị trí không tồn tại!", HttpStatus.NOT_FOUND),
+    EMAIL_INVALID(2014, "Email không hợp lệ", HttpStatus.BAD_REQUEST),
+    PHONE_INVALID(2015, "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0", HttpStatus.BAD_REQUEST),
+    SUPPLIER_NAME_NOT_BLANK(2016, "Tên nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
+    SUPPLIER_PHONE_NOT_BLANK(2017, "Số điện thoại nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
+    SUPPLIER_EXISTED(2018, "Tên nhà cung cấp đã tồn tại!", HttpStatus.BAD_REQUEST),
+    SUPPLIER_NOT_FOUND(2019, "Nhà cung cấp không tồn tại!", HttpStatus.NOT_FOUND),
+    USERNAME_NOT_BLANK(2020, "Username không được để trống", HttpStatus.BAD_REQUEST),
+    PASSWORD_NOT_BLANK(2021, "Password không được để trống", HttpStatus.BAD_REQUEST),
+    FULLNAME_NOT_BLANK(2022, "Họ và tên không được để trống", HttpStatus.BAD_REQUEST),
+    EMAIL_NOT_BLANK(2023, "Email không được để trống", HttpStatus.BAD_REQUEST),
+    DOB_INVALID(2024, "Ngày sinh phải là ngày trong quá khứ", HttpStatus.BAD_REQUEST),
+    GENDER_NOT_BLANK(2025, "Giới tính không được để trống", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_BLANK(2026, "Role không được để trống", HttpStatus.BAD_REQUEST),
+    WAREHOUSE_REQUIRED(2027, "Phải chọn ít nhất một kho cho nhân viên kho", HttpStatus.BAD_REQUEST),
+    WAREHOUSE_NOT_FOUND(2028, "Kho không tồn tại!", HttpStatus.NOT_FOUND),
+    UNAUTHORIZED_WAREHOUSE_ACCESS(2029, "Bạn không có quyền truy cập kho này", HttpStatus.FORBIDDEN),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

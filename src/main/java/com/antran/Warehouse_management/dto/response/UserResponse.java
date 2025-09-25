@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +23,5 @@ public class UserResponse {
     LocalDate dob;
     boolean enabled;
     ERole role;
+    Set<Integer> warehouseIds;
 }

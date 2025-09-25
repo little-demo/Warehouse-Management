@@ -36,6 +36,9 @@ public class AuthController {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.INCORRECT_PASSWORD);
         }
+        if (!user.isEnabled()) {
+            throw new AppException(ErrorCode.USER_DISABLED);
+        }
         String token = jwtUtil.generateToken(user);
 
         return ApiResponse.<String>builder()

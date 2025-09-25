@@ -43,14 +43,15 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationResponse updateLocation(int id, LocationRequest request) {
-        if (locationRepository.existsByName(request.getName())) {
+        Location location = findLocationById(id);
+
+        if (!location.getName().equals(request.getName()) && locationRepository.existsByName(request.getName())) {
             throw new AppException(ErrorCode.LOCATION_NAME_ALREADY_EXISTS);
         }
 
         Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId())
                 .orElseThrow(() -> new AppException(ErrorCode.WAREHOUSE_NOT_EXISTED));
 
-        Location location = findLocationById(id);
         location.setName(request.getName());
         location.setType(request.getType());
         location.setWarehouse(warehouse);

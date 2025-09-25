@@ -1,6 +1,8 @@
 package com.antran.Warehouse_management.utils;
 
 import com.antran.Warehouse_management.entity.User;
+import com.antran.Warehouse_management.entity.Warehouse;
+import com.antran.Warehouse_management.enums.ERole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
@@ -19,9 +24,20 @@ public class JwtUtil {
     private long VALID_DURATION;
 
     public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
+
+        // Nếu là staff thì gắn thêm danh sách warehouseId
+        if (user.getRole() == ERole.WAREHOUSE_STAFF) {
+            claims.put("warehouseIds", user.getWarehouses()
+                    .stream()
+                    .map(Warehouse::getId)
+                    .toList());
+        }
+
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", user.getRole().name())
+                .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + VALID_DURATION))
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
@@ -42,5 +58,9 @@ public class JwtUtil {
 
     public String extractRole(String token) {
         return extractClaims(token).get("role", String.class);
+    }
+
+    public List<Integer> extractWarehouseIds(String token) {
+        return extractClaims(token).get("warehouseIds", List.class);
     }
 }

@@ -20,5 +20,5 @@ server:
 
 jwt:
   signerKey: "gQU+fw7FRYWvoBVKHAqd0JAeJL4xNg+kiCpehSwMLjxWzvDrkVDk4T307TwlBEkj"
-  valid-duration: 360000 #in seconds
-  refreshable-duration: 36000000 #120 seconds
+  valid-duration: 3600000 #milisec: 1000 milisec = 1 sec
+  refreshable-duration: 36000000 #milisec

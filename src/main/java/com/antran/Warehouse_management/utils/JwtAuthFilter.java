@@ -1,5 +1,6 @@
 package com.antran.Warehouse_management.utils;
 
+import com.antran.Warehouse_management.dto.request.User.CustomUserPrincipal;
 import com.antran.Warehouse_management.service.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -40,8 +42,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             if (!jwtUtil.extractClaims(token).getExpiration().before(new Date())) {
+                // lấy warehouseIds từ token
+                List<Integer> warehouseIds = jwtUtil.extractWarehouseIds(token);
+
+                CustomUserPrincipal principal = new CustomUserPrincipal(
+                        userDetails.getUsername(),
+                        userDetails.getPassword(),
+                        userDetails.isEnabled(),
+                        userDetails.getAuthorities(),
+                        warehouseIds
+                );
+
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

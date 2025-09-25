@@ -5,10 +5,13 @@ import com.antran.Warehouse_management.dto.request.User.UserRequest;
 import com.antran.Warehouse_management.dto.request.User.UserUpdateRequest;
 import com.antran.Warehouse_management.dto.response.UserResponse;
 import com.antran.Warehouse_management.entity.User;
+import com.antran.Warehouse_management.entity.Warehouse;
+import com.antran.Warehouse_management.enums.ERole;
 import com.antran.Warehouse_management.exception.AppException;
 import com.antran.Warehouse_management.exception.ErrorCode;
 import com.antran.Warehouse_management.mapper.UserMapper;
 import com.antran.Warehouse_management.repository.UserRepository;
+import com.antran.Warehouse_management.repository.WarehouseRepository;
 import com.antran.Warehouse_management.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,7 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+    WarehouseRepository warehouseRepository;
     PasswordEncoder passwordEncoder;
 
     @Override
@@ -34,6 +40,8 @@ public class UserServiceImpl implements UserService {
         }
         User user = UserMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        handleWarehousesByRole(user, request.getRole(), request.getWarehouseIds());
 
         return UserMapper.toResponse(userRepository.save(user));
     }
@@ -59,6 +67,9 @@ public class UserServiceImpl implements UserService {
         user.setPhone(request.getPhone());
         user.setDob(request.getDob());
         user.setRole(request.getRole());
+
+        handleWarehousesByRole(user, request.getRole(), request.getWarehouseIds());
+
         return UserMapper.toResponse(userRepository.save(user));
     }
 
@@ -89,5 +100,21 @@ public class UserServiceImpl implements UserService {
 
     User findUserById(int id) {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
+    private void handleWarehousesByRole(User user, ERole role, Set<Integer> warehouseIds) {
+        if (role == ERole.WAREHOUSE_STAFF) {
+            if (warehouseIds == null || warehouseIds.isEmpty()) {
+                throw new AppException(ErrorCode.WAREHOUSE_REQUIRED);
+            }
+            Set<Warehouse> warehouses = warehouseRepository.findAllByIdIn(warehouseIds);
+            if (warehouses.isEmpty()) {
+                throw new AppException(ErrorCode.WAREHOUSE_NOT_FOUND);
+            }
+            user.setWarehouses(warehouses);
+        } else {
+            // ADMIN, ACCOUNTANT, WAREHOUSE_MANAGER không cần gắn warehouse
+            user.setWarehouses(Collections.emptySet());
+        }
     }
 }
