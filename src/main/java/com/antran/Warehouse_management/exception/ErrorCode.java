@@ -51,6 +51,12 @@ public enum ErrorCode {
     WAREHOUSE_REQUIRED(2027, "Phải chọn ít nhất một kho cho nhân viên kho", HttpStatus.BAD_REQUEST),
     WAREHOUSE_NOT_FOUND(2028, "Kho không tồn tại!", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_WAREHOUSE_ACCESS(2029, "Bạn không có quyền truy cập kho này", HttpStatus.FORBIDDEN),
+    ROLE_NAME_NOT_BE_EMPTY(3001, "Tên vai trò không được để trống", HttpStatus.BAD_REQUEST),
+    ROLE_EXISTED(3002, "Tên vai trò đã tồn tại!", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_EXISTED(3003, "Vai trò không tồn tại!", HttpStatus.NOT_FOUND),
+    PERMISSION_NAME_NOT_BE_EMPTY(3004, "Tên quyền không được để trống", HttpStatus.BAD_REQUEST),
+    PERMISSION_EXISTED(3005, "Tên quyền đã tồn tại!", HttpStatus.BAD_REQUEST),
+    PERMISSION_NOT_EXISTED(3006, "Quyền không tồn tại!", HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

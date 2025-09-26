@@ -69,4 +69,12 @@ public class UserController {
                 .message("Đổi mật khẩu thành công!")
                 .build();
     }
+
+    @DeleteMapping("/{id}")
+    ApiResponse<Void> deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        return ApiResponse.<Void>builder()
+                .message("Xoá user thành công!")
+                .build();
+    }
 }

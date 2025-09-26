@@ -5,6 +5,8 @@ import com.antran.Warehouse_management.enums.ERole;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -25,6 +27,7 @@ public class User {
     String username;
     String password;
     String fullName;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "gender")
     Gender gender;
@@ -33,9 +36,9 @@ public class User {
     LocalDate dob;
     @Builder.Default
     boolean enabled = true;
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "role")
-    ERole role;
+
+    @ManyToMany
+    Set<Role> roles = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

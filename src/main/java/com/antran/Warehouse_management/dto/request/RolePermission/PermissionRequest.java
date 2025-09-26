@@ -1,0 +1,16 @@
+package com.antran.Warehouse_management.dto.request.RolePermission;
+
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PermissionRequest {
+    @NotBlank(message = "PERMISSION_NAME_NOT_BE_EMPTY")
+    String name;
+    String description;
+}
