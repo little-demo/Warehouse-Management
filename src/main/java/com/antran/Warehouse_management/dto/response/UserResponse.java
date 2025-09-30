@@ -22,6 +22,6 @@ public class UserResponse {
     String phone;
     LocalDate dob;
     boolean enabled;
-    ERole role;
+    Set<String> roles;
     Set<Integer> warehouseIds;
 }

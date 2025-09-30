@@ -16,8 +16,9 @@ public class ProductRequest {
     String sku;
     @NotBlank(message = "PRODUCT_NAME_NOT_BE_EMPTY")
     String name;
-    @NotBlank(message = "UNIT_NOT_BE_EMPTY")
-    String unit;
+
+    int baseUnitId;
+
     @PositiveOrZero(message = "MIN_STOCK_LEVEL_MUST_BE_POSITIVE")
     float minStockLevel;
     int categoryId;

@@ -39,8 +39,8 @@ public class UserRequest {
     @Past(message = "DOB_INVALID")
     LocalDate dob;
 
-    @NotNull(message = "ROLE_NOT_BLANK")
-    ERole role;
+    @NotEmpty(message = "ROLES_NOT_BLANK")
+    Set<ERole> roles;
 
     Set<Integer> warehouseIds;
 }

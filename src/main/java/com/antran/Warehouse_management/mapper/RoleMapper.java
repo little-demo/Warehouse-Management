@@ -11,9 +11,9 @@ public class RoleMapper {
         return RoleResponse.builder()
                 .id(role.getId())
                 .name(role.getName())
-                .permissions(role.getPermissions().stream()
-                        .map(PermissionMapper::toResponse)
-                        .collect(Collectors.toSet()))
+//                .permissions(role.getPermissions().stream()
+//                        .map(PermissionMapper::toResponse)
+//                        .collect(Collectors.toSet()))
                 .build();
     }
 

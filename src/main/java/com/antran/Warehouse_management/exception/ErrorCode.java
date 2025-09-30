@@ -57,6 +57,12 @@ public enum ErrorCode {
     PERMISSION_NAME_NOT_BE_EMPTY(3004, "Tên quyền không được để trống", HttpStatus.BAD_REQUEST),
     PERMISSION_EXISTED(3005, "Tên quyền đã tồn tại!", HttpStatus.BAD_REQUEST),
     PERMISSION_NOT_EXISTED(3006, "Quyền không tồn tại!", HttpStatus.NOT_FOUND),
+    ROLE_NOT_FOUND(3007, "Vai trò không tồn tại!", HttpStatus.NOT_FOUND),
+    CUSTOMER_NAME_NOT_BLANK(3008, "Tên khách hàng không được để trống", HttpStatus.BAD_REQUEST),
+    CUSTOMER_PHONE_NOT_BLANK(3009, "Số điện thoại khách hàng không được để trống", HttpStatus.BAD_REQUEST),
+    CUSTOMER_NOT_FOUND(3010, "Khách hàng không tồn tại!", HttpStatus.NOT_FOUND),
+    UNIT_NAME_NOT_BLANK(3011, "Tên đơn vị không được để trống", HttpStatus.BAD_REQUEST),
+    UNIT_NOT_FOUND(3012, "Đơn vị không tồn tại!", HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

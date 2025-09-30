@@ -7,6 +7,7 @@ import com.antran.Warehouse_management.dto.response.WarehouseResponse;
 import com.antran.Warehouse_management.entity.User;
 import com.antran.Warehouse_management.entity.Warehouse;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserMapper {
@@ -21,7 +22,10 @@ public class UserMapper {
                 .phone(user.getPhone())
                 .dob(user.getDob())
                 .enabled(user.isEnabled())
-                .role(user.getRole())
+                .roles(user.getRoles() == null ? null :
+                        user.getRoles().stream()
+                                .map(role -> role.getName())
+                                .collect(Collectors.toSet()))
                 .warehouseIds(user.getWarehouses() == null ? null :
                         user.getWarehouses().stream()
                                 .map(Warehouse::getId)
@@ -39,7 +43,6 @@ public class UserMapper {
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .dob(request.getDob())
-                .role(request.getRole())
                 .build();
     }
 }

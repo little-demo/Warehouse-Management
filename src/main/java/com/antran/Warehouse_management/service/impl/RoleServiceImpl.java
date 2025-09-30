@@ -30,8 +30,8 @@ public class RoleServiceImpl implements RoleService {
             throw new AppException(ErrorCode.ROLE_EXISTED);
         }
         Role role = RoleMapper.toEntity(request);
-        List<Permission> permissions = permissionRepository.findAllById(request.getPermissionIds());
-        role.setPermissions(new HashSet<>(permissions));
+//        List<Permission> permissions = permissionRepository.findAllById(request.getPermissionIds());
+//        role.setPermissions(new HashSet<>(permissions));
 
         return RoleMapper.toResponse(roleRepository.save(role));
     }

@@ -4,12 +4,14 @@ import com.antran.Warehouse_management.dto.request.User.UserChangePasswordReques
 import com.antran.Warehouse_management.dto.request.User.UserRequest;
 import com.antran.Warehouse_management.dto.request.User.UserUpdateRequest;
 import com.antran.Warehouse_management.dto.response.UserResponse;
+import com.antran.Warehouse_management.entity.Role;
 import com.antran.Warehouse_management.entity.User;
 import com.antran.Warehouse_management.entity.Warehouse;
 import com.antran.Warehouse_management.enums.ERole;
 import com.antran.Warehouse_management.exception.AppException;
 import com.antran.Warehouse_management.exception.ErrorCode;
 import com.antran.Warehouse_management.mapper.UserMapper;
+import com.antran.Warehouse_management.repository.RoleRepository;
 import com.antran.Warehouse_management.repository.UserRepository;
 import com.antran.Warehouse_management.repository.WarehouseRepository;
 import com.antran.Warehouse_management.service.UserService;
@@ -22,8 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +36,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     WarehouseRepository warehouseRepository;
+    RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
 
     @Override
@@ -42,7 +47,13 @@ public class UserServiceImpl implements UserService {
         User user = UserMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        handleWarehousesByRole(user, request.getRole(), request.getWarehouseIds());
+        Set<Role> roleEntities = request.getRoles().stream()
+                .map(erole -> roleRepository.findByName(erole.name())
+                        .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND)))
+                .collect(Collectors.toSet());
+        user.setRoles(roleEntities);
+
+        handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
 
         return UserMapper.toResponse(userRepository.save(user));
     }
@@ -67,9 +78,14 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setDob(request.getDob());
-        user.setRole(request.getRole());
 
-        handleWarehousesByRole(user, request.getRole(), request.getWarehouseIds());
+        Set<Role> roleEntities = request.getRoles().stream()
+                .map(erole -> roleRepository.findByName(erole.name())
+                        .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND)))
+                .collect(Collectors.toSet());
+        user.setRoles(roleEntities);
+
+        handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
 
         return UserMapper.toResponse(userRepository.save(user));
     }
@@ -109,18 +125,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
-    private void handleWarehousesByRole(User user, ERole role, Set<Integer> warehouseIds) {
-        if (role == ERole.WAREHOUSE_STAFF) {
+    private void handleWarehousesByRoles(User user, Set<ERole> roles, Set<Integer> warehouseIds) {
+        if (roles.contains(ERole.WAREHOUSE_STAFF)) {
             if (warehouseIds == null || warehouseIds.isEmpty()) {
                 throw new AppException(ErrorCode.WAREHOUSE_REQUIRED);
             }
-            Set<Warehouse> warehouses = warehouseRepository.findAllByIdIn(warehouseIds);
+
+            Set<Warehouse> warehouses = new HashSet<>(warehouseRepository.findAllById(warehouseIds));
             if (warehouses.isEmpty()) {
                 throw new AppException(ErrorCode.WAREHOUSE_NOT_FOUND);
             }
             user.setWarehouses(warehouses);
         } else {
-            // ADMIN, ACCOUNTANT, WAREHOUSE_MANAGER không cần gắn warehouse
             user.setWarehouses(Collections.emptySet());
         }
     }

@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
+@Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
     UserRepository userRepository;
 
@@ -29,16 +31,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user với username: " + username));
 
-        List<GrantedAuthority> authorities =
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName())) // Role.name = ERole
+                .toList();
 
         return new CustomUserPrincipal(
                 user.getUsername(),
                 user.getPassword(),
                 user.isEnabled(),
                 authorities,
-                null
-//                user.getWarehouses().stream().map(Warehouse::getId).toList()
+                user.getWarehouses().stream().map(Warehouse::getId).toList()
         );
     }
 }

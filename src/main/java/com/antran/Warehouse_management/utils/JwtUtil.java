@@ -1,5 +1,6 @@
 package com.antran.Warehouse_management.utils;
 
+import com.antran.Warehouse_management.entity.Role;
 import com.antran.Warehouse_management.entity.User;
 import com.antran.Warehouse_management.entity.Warehouse;
 import com.antran.Warehouse_management.enums.ERole;
@@ -27,10 +28,18 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRole().name());
 
-        // Nếu là staff thì gắn thêm danh sách warehouseId
-        if (user.getRole() == ERole.WAREHOUSE_STAFF) {
+        // Gắn danh sách roles
+        List<String> roleNames = user.getRoles().stream()
+                .map(Role::getName) // Role.name là ERole
+                .toList();
+        claims.put("roles", roleNames);
+
+        // Nếu user có role WAREHOUSE_STAFF thì gắn thêm danh sách warehouseId
+        boolean isStaff = user.getRoles().stream()
+                .anyMatch(r -> ERole.WAREHOUSE_STAFF.name().equals(r.getName()));
+
+        if (isStaff) {
             claims.put("warehouseIds", user.getWarehouses()
                     .stream()
                     .map(Warehouse::getId)
