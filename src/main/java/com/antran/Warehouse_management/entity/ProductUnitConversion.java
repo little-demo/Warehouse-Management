@@ -31,6 +31,6 @@ public class ProductUnitConversion {
     Unit unit;
 
     @Column(nullable = false)
-    BigDecimal ratioToBase;
+    BigDecimal ratioToBase; // BaseUnit là ratio = 1
     // VD: 1 Thùng = 24 Chai → ratioToBase = 24
 }

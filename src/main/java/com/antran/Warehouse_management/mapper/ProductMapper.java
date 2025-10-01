@@ -20,15 +20,12 @@ public class ProductMapper {
                 .name(product.getName())
                 .minStockLevel(product.getMinStockLevel())
                 .isActive(product.isActive())
-                // Base Unit
-                .baseUnitId(product.getBaseUnit() != null ? product.getBaseUnit().getId() : 0)
-                .baseUnitName(product.getBaseUnit() != null ? product.getBaseUnit().getName() : null)
 
-                // Category
+                // category
                 .categoryId(product.getCategory() != null ? product.getCategory().getId() : 0)
                 .categoryName(product.getCategory() != null ? product.getCategory().getName() : null)
 
-                // Conversions
+                // conversions (bao gồm baseUnit ratio=1)
                 .conversions(product.getConversions() == null ? Set.of() :
                         product.getConversions().stream()
                                 .map(conv -> ProductUnitConversionResponse.builder()
@@ -43,13 +40,12 @@ public class ProductMapper {
                 .build();
     }
 
-    public static Product toEntity(ProductRequest request, Category category, Unit baseUnit) {
+    public static Product toEntity(ProductRequest request, Category category) {
         if (request == null) return null;
 
         return Product.builder()
                 .sku(request.getSku())
                 .name(request.getName())
-                .baseUnit(baseUnit) // truyền từ service khi tạo/sửa
                 .minStockLevel(request.getMinStockLevel())
                 .category(category)
                 .build();

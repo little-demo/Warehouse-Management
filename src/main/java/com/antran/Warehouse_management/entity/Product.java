@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +24,6 @@ public class Product {
     String sku;
     String name;
 
-    @ManyToOne
-    Unit baseUnit; //đơn vị cơ bản để tính tồn kho
-
     float minStockLevel;
     @Builder.Default
     boolean isActive = true;
@@ -34,6 +32,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     Category category;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<ProductUnitConversion> conversions = new HashSet<>(); //dùng để convert giữa các đơn vị với nhau
+    // Danh sách đơn vị quy đổi (luôn có 1 dòng ratio=1 = baseUnit)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    Set<ProductUnitConversion> conversions = new HashSet<>();
 }

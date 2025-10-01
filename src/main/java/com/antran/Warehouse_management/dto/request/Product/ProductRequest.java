@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +25,6 @@ public class ProductRequest {
     @PositiveOrZero(message = "MIN_STOCK_LEVEL_MUST_BE_POSITIVE")
     float minStockLevel;
     int categoryId;
+
+    List<UnitConversionRequest> conversions = new ArrayList<>();
 }
