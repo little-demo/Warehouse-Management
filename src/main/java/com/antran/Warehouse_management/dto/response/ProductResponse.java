@@ -20,7 +20,4 @@ public class ProductResponse {
 
     int categoryId;
     String categoryName;
-
-    // Bao gồm cả baseUnit (ratio = 1) và các conversions khác
-    Set<ProductUnitConversionResponse> conversions;
 }

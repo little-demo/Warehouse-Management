@@ -7,28 +7,23 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 
 @Entity
-@Table(
-        name = "product_unit_conversions",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "unit_id"}) //đảm bảo 1 product - 1 unit duy nhất
-)
+@Table(name = "unit_conversions")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductUnitConversion {
+public class UnitConversion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    Product product;
+    private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "unit_id", nullable = false)
-    Unit unit;
+    String unitName; // Tên đơn vị quy đổi, VD: Thùng, Chai, Hộp, Gói...
 
     @Column(nullable = false)
     BigDecimal ratioToBase; // BaseUnit là ratio = 1

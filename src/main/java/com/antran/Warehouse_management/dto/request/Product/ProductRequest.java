@@ -19,12 +19,12 @@ public class ProductRequest {
     String sku;
     @NotBlank(message = "PRODUCT_NAME_NOT_BE_EMPTY")
     String name;
-
-    int baseUnitId;
+    @NotBlank(message = "UNIT_NAME_NOT_BLANK")
+    String baseUnit;
 
     @PositiveOrZero(message = "MIN_STOCK_LEVEL_MUST_BE_POSITIVE")
     float minStockLevel;
     int categoryId;
 
-    List<UnitConversionRequest> conversions = new ArrayList<>();
+    List<UnitConversionRequest> conversions;
 }

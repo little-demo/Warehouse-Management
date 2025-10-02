@@ -23,7 +23,7 @@ public class Product {
     @Column(unique = true, nullable = false)
     String sku;
     String name;
-
+    String baseUnit; // Đơn vị cơ bản
     float minStockLevel;
     @Builder.Default
     boolean isActive = true;
@@ -31,9 +31,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
-
-    // Danh sách đơn vị quy đổi (luôn có 1 dòng ratio=1 = baseUnit)
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @Builder.Default
-    Set<ProductUnitConversion> conversions = new HashSet<>();
 }

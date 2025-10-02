@@ -63,9 +63,8 @@ public enum ErrorCode {
     CUSTOMER_NOT_FOUND(3010, "Khách hàng không tồn tại!", HttpStatus.NOT_FOUND),
     UNIT_NAME_NOT_BLANK(3011, "Tên đơn vị không được để trống", HttpStatus.BAD_REQUEST),
     UNIT_NOT_FOUND(3012, "Đơn vị không tồn tại!", HttpStatus.NOT_FOUND),
-    BASE_UNIT_CANNOT_BE_CHANGED(3013, "Đơn vị cơ sở đang được sử dụng trong các đơn vị quy đổi khác, không thể thay đổi!", HttpStatus.BAD_REQUEST),
-    UNIT_ALREADY_EXISTS_AS_BASE(3014, "Đơn vị đã được sử dụng làm đơn vị cơ bản", HttpStatus.BAD_REQUEST),
-    INVALID_CONVERSION_RATIO(3015, "Tỉ lệ quy đổi phải là số dương", HttpStatus.BAD_REQUEST),
+    INVALID_CONVERSION_RATIO(3013, "Tỉ lệ quy đổi phải là số dương", HttpStatus.BAD_REQUEST),
+    UNIT_ALREADY_EXISTS_AS_BASE(3014, "Đơn vị quy đổi đã tồn tại dưới dạng đơn vị cơ bản", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
