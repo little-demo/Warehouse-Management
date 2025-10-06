@@ -20,7 +20,4 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
-
-//    @ManyToMany
-//    Set<Permission> permissions = new HashSet<>();
 }

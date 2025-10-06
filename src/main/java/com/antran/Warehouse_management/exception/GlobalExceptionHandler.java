@@ -18,10 +18,19 @@ public class GlobalExceptionHandler {
     private static final String MIN_ATTRIBUTE = "min";
 
     @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingException(Exception exception) {
+    public ResponseEntity<ApiResponse> handleException(Exception exception) {
+        // Log ra console
+        log.error("❌ Unexpected exception caught in controller:", exception);
+
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+
+        // Nếu exception có message, hiển thị message chi tiết
+        String message = exception.getMessage();
+        if (message == null || message.isBlank()) {
+            message = exception.getClass().getSimpleName();
+        }
+        apiResponse.setMessage("Error: " + message);
 
         return ResponseEntity.badRequest().body(apiResponse);
     }

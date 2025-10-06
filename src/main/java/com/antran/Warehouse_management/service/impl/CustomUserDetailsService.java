@@ -39,8 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getUsername(),
                 user.getPassword(),
                 user.isEnabled(),
-                authorities,
-                user.getWarehouses().stream().map(Warehouse::getId).toList()
+                authorities
+                //user.getWarehouses().stream().map(Warehouse::getId).toList()
         );
     }
 }

@@ -26,10 +26,10 @@ public class UserMapper {
                         user.getRoles().stream()
                                 .map(role -> role.getName())
                                 .collect(Collectors.toSet()))
-                .warehouseIds(user.getWarehouses() == null ? null :
-                        user.getWarehouses().stream()
-                                .map(Warehouse::getId)
-                                .collect(Collectors.toSet()))
+//                .warehouseIds(user.getWarehouses() == null ? null :
+//                        user.getWarehouses().stream()
+//                                .map(Warehouse::getId)
+//                                .collect(Collectors.toSet()))
                 .build();
     }
 

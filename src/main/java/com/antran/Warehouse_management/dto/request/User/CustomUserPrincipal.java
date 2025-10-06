@@ -15,7 +15,7 @@ public class CustomUserPrincipal implements UserDetails {
     private final String password;
     private final boolean enabled;
     private final Collection<? extends GrantedAuthority> authorities;
-    private final List<Integer> warehouseIds; // thêm warehouseIds
+//    private final List<Integer> warehouseIds; // thêm warehouseIds
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

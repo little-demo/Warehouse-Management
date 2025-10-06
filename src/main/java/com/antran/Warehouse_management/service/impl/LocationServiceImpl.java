@@ -72,7 +72,7 @@ public class LocationServiceImpl implements LocationService {
         locationRepository.delete(location);
     }
 
-    Location findLocationById(int id) {
+    public Location findLocationById(int id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.LOCATION_NOT_EXISTED));
     }

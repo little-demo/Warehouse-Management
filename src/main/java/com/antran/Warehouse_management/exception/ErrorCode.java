@@ -65,6 +65,9 @@ public enum ErrorCode {
     UNIT_NOT_FOUND(3012, "Đơn vị không tồn tại!", HttpStatus.NOT_FOUND),
     INVALID_CONVERSION_RATIO(3013, "Tỉ lệ quy đổi phải là số dương", HttpStatus.BAD_REQUEST),
     UNIT_ALREADY_EXISTS_AS_BASE(3014, "Đơn vị quy đổi đã tồn tại dưới dạng đơn vị cơ bản", HttpStatus.BAD_REQUEST),
+    RECEIPT_CODE_ALREADY_EXISTS(3015, "Mã phiếu nhập đã tồn tại!", HttpStatus.BAD_REQUEST),
+    GOODS_RECEIPT_NOT_FOUND(3016, "Phiếu nhập kho không tồn tại!", HttpStatus.NOT_FOUND),
+    GOODS_RECEIPT_CANNOT_BE_DELETED(3017, "Không thể xóa phiếu nhập vì đã phát sinh giao dịch.", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

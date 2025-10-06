@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-    User findUserById(int id) {
+    public User findUserById(int id) {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
@@ -135,9 +135,9 @@ public class UserServiceImpl implements UserService {
             if (warehouses.isEmpty()) {
                 throw new AppException(ErrorCode.WAREHOUSE_NOT_FOUND);
             }
-            user.setWarehouses(warehouses);
+//            user.setWarehouses(warehouses);
         } else {
-            user.setWarehouses(Collections.emptySet());
+//            user.setWarehouses(Collections.emptySet());
         }
     }
 }

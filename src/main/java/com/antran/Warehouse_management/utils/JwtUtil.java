@@ -39,12 +39,12 @@ public class JwtUtil {
         boolean isStaff = user.getRoles().stream()
                 .anyMatch(r -> ERole.WAREHOUSE_STAFF.name().equals(r.getName()));
 
-        if (isStaff) {
-            claims.put("warehouseIds", user.getWarehouses()
-                    .stream()
-                    .map(Warehouse::getId)
-                    .toList());
-        }
+//        if (isStaff) {
+//            claims.put("warehouseIds", user.getWarehouses()
+//                    .stream()
+//                    .map(Warehouse::getId)
+//                    .toList());
+//        }
 
         return Jwts.builder()
                 .setSubject(user.getUsername())

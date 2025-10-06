@@ -74,7 +74,7 @@ public class SupplierServiceImpl implements SupplierService {
         supplierRepository.save(supplier);
     }
 
-    private Supplier findSupplierById(int id) {
+    public Supplier findSupplierById(int id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SUPPLIER_NOT_FOUND));
     }

@@ -25,9 +25,9 @@ public class WarehouseSecurity {
                 throw new AppException(ErrorCode.WAREHOUSE_REQUIRED);
             }
 
-            if (!principal.getWarehouseIds().contains(warehouseId)) {
-                throw new AppException(ErrorCode.UNAUTHORIZED_WAREHOUSE_ACCESS);
-            }
+//            if (!principal.getWarehouseIds().contains(warehouseId)) {
+//                throw new AppException(ErrorCode.UNAUTHORIZED_WAREHOUSE_ACCESS);
+//            }
         }
 
         // nếu không phải staff → mặc định cho qua

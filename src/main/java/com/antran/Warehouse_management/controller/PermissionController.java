@@ -12,34 +12,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/permissions")
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+//@RestController
+//@RequestMapping("/api/permissions")
+//@RequiredArgsConstructor
+//@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
-    PermissionService permissionService;
-
-    @PostMapping()
-    ApiResponse<PermissionResponse> createPermission(@RequestBody @Valid PermissionRequest request) {
-        return ApiResponse.<PermissionResponse>builder()
-                .result(permissionService.createPermission(request))
-                .message("Tạo quyền thành công!")
-                .build();
-    }
-
-    @GetMapping()
-    ApiResponse<List<PermissionResponse>> getAllPermissions() {
-        return ApiResponse.<List<PermissionResponse>>builder()
-                .result(permissionService.getAllPermissions())
-                .message("Lấy danh sách quyền thành công!")
-                .build();
-    }
-
-    @DeleteMapping("/{id}")
-    ApiResponse<Void> deletePermission(@PathVariable int id) {
-        permissionService.deletePermission(id);
-        return ApiResponse.<Void>builder()
-                .message("Xoá quyền thành công!")
-                .build();
-    }
+//    PermissionService permissionService;
+//
+//    @PostMapping()
+//    ApiResponse<PermissionResponse> createPermission(@RequestBody @Valid PermissionRequest request) {
+//        return ApiResponse.<PermissionResponse>builder()
+//                .result(permissionService.createPermission(request))
+//                .message("Tạo quyền thành công!")
+//                .build();
+//    }
+//
+//    @GetMapping()
+//    ApiResponse<List<PermissionResponse>> getAllPermissions() {
+//        return ApiResponse.<List<PermissionResponse>>builder()
+//                .result(permissionService.getAllPermissions())
+//                .message("Lấy danh sách quyền thành công!")
+//                .build();
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    ApiResponse<Void> deletePermission(@PathVariable int id) {
+//        permissionService.deletePermission(id);
+//        return ApiResponse.<Void>builder()
+//                .message("Xoá quyền thành công!")
+//                .build();
+//    }
 }
