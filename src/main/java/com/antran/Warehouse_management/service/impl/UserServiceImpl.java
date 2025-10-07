@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toSet());
         user.setRoles(roleEntities);
 
-        handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
+        //handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
 
         return UserMapper.toResponse(userRepository.save(user));
     }
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toSet());
         user.setRoles(roleEntities);
 
-        handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
+        //handleWarehousesByRoles(user, request.getRoles(), request.getWarehouseIds());
 
         return UserMapper.toResponse(userRepository.save(user));
     }
@@ -125,19 +125,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
-    private void handleWarehousesByRoles(User user, Set<ERole> roles, Set<Integer> warehouseIds) {
-        if (roles.contains(ERole.WAREHOUSE_STAFF)) {
-            if (warehouseIds == null || warehouseIds.isEmpty()) {
-                throw new AppException(ErrorCode.WAREHOUSE_REQUIRED);
-            }
-
-            Set<Warehouse> warehouses = new HashSet<>(warehouseRepository.findAllById(warehouseIds));
-            if (warehouses.isEmpty()) {
-                throw new AppException(ErrorCode.WAREHOUSE_NOT_FOUND);
-            }
-//            user.setWarehouses(warehouses);
-        } else {
-//            user.setWarehouses(Collections.emptySet());
-        }
-    }
+//    private void handleWarehousesByRoles(User user, Set<ERole> roles, Set<Integer> warehouseIds) {
+//        if (roles.contains(ERole.WAREHOUSE_STAFF)) {
+//            if (warehouseIds == null || warehouseIds.isEmpty()) {
+//                throw new AppException(ErrorCode.WAREHOUSE_REQUIRED);
+//            }
+//
+//            Set<Warehouse> warehouses = new HashSet<>(warehouseRepository.findAllById(warehouseIds));
+//            if (warehouses.isEmpty()) {
+//                throw new AppException(ErrorCode.WAREHOUSE_NOT_FOUND);
+//            }
+////            user.setWarehouses(warehouses);
+//        } else {
+////            user.setWarehouses(Collections.emptySet());
+//        }
+//    }
 }

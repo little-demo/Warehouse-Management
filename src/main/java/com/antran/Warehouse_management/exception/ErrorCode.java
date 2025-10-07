@@ -68,6 +68,7 @@ public enum ErrorCode {
     RECEIPT_CODE_ALREADY_EXISTS(3015, "Mã phiếu nhập đã tồn tại!", HttpStatus.BAD_REQUEST),
     GOODS_RECEIPT_NOT_FOUND(3016, "Phiếu nhập kho không tồn tại!", HttpStatus.NOT_FOUND),
     GOODS_RECEIPT_CANNOT_BE_DELETED(3017, "Không thể xóa phiếu nhập vì đã phát sinh giao dịch.", HttpStatus.BAD_REQUEST),
+    INVENTORY_NOT_FOUND(3018, "Không tìm thấy tồn kho cho sản phẩm", HttpStatus.NOT_FOUND),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

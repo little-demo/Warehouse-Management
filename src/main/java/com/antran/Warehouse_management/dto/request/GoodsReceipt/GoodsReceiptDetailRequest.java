@@ -16,4 +16,6 @@ public class GoodsReceiptDetailRequest {
 
     BigDecimal quantity;
     BigDecimal unitPrice;
+
+    int unitConversionId; // Đơn vị quy đổi khi nhập hàng, VD: Thùng, Chai, Hộp, Gói...
 }

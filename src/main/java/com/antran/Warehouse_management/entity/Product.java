@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -31,4 +30,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<UnitConversion> unitConversions = new ArrayList<>();
 }

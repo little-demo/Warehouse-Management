@@ -42,5 +42,5 @@ public class UserRequest {
     @NotEmpty(message = "ROLES_NOT_BLANK")
     Set<ERole> roles;
 
-    Set<Integer> warehouseIds;
+//    Set<Integer> warehouseIds;
 }

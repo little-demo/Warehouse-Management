@@ -3,6 +3,7 @@ package com.antran.Warehouse_management.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -15,9 +16,12 @@ public class ProductResponse {
     String sku;
     String name;
 
+    String baseUnit;
     float minStockLevel;
     boolean isActive;
 
     int categoryId;
     String categoryName;
+
+    List<UnitConversionResponse> conversions;
 }

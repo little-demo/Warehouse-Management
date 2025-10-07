@@ -17,4 +17,10 @@ public class GoodsReceiptDetailResponse {
     BigDecimal quantity;
     BigDecimal unitPrice;
     BigDecimal totalPrice;
+
+    String displayUnit; // Đơn vị người nhập chọn
+    BigDecimal conversionRatio; // Tỷ lệ quy đổi -> base
+    String baseUnit; // Đơn vị gốc
+    BigDecimal baseQuantity; // Số lượng gốc
+    BigDecimal baseUnitPrice; // Giá / đơn vị gốc
 }

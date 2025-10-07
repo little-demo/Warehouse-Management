@@ -34,5 +34,5 @@ public class UserUpdateRequest {
     @NotEmpty(message = "ROLE_NOT_BLANK")
     Set<ERole> roles;
 
-    Set<Integer> warehouseIds;
+//    Set<Integer> warehouseIds;
 }

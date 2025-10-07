@@ -1,11 +1,14 @@
 package com.antran.Warehouse_management.entity;
 
+import com.antran.Warehouse_management.enums.IssueType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "goods_issues")
@@ -20,16 +23,19 @@ public class GoodsIssue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String issueCode;
-    LocalDateTime issueDate;
+    Date issueDate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     Customer customer;
 
-    String issueType;
+    IssueType issueType;
     BigDecimal totalAmount; //tính tự động khi thêm mới hoặc cập nhật
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     User createdBy;
+
+    @OneToMany(mappedBy = "goodsIssue", cascade = CascadeType.ALL)
+    List<GoodsIssueDetail> details;
 }

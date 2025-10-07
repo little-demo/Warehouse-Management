@@ -11,6 +11,7 @@ public class GoodsReceiptMapper {
         return GoodsReceipt.builder()
                 .receiptCode(request.getReceiptCode())
                 .receiptDate(LocalDateTime.now())
+                .paidAmount(request.getPaidAmount())
                 .build();
     }
 
@@ -24,6 +25,8 @@ public class GoodsReceiptMapper {
                 .createdById(goodsReceipt.getCreatedBy().getId())
                 .createdByName(goodsReceipt.getCreatedBy().getUsername())
                 .totalAmount(goodsReceipt.getTotalAmount())
+                .paidAmount(goodsReceipt.getPaidAmount())
+                .paymentStatus(goodsReceipt.getPaymentStatus())
                 .details(goodsReceipt.getDetails() == null ? null :
                         goodsReceipt.getDetails().stream()
                                 .map(GoodsReceiptDetailMapper::toResponse)

@@ -27,6 +27,10 @@ public class GoodsIssueDetail {
     @JoinColumn(name = "inventory_batch_id")
     InventoryBatch inventoryBatch;
 
+    @ManyToOne
+    @JoinColumn(name = "unit_conversion_id")
+    UnitConversion unitConversion;
+
     BigDecimal quantity;
     BigDecimal unitPrice;
     BigDecimal totalPrice;

@@ -5,7 +5,6 @@ import com.antran.Warehouse_management.dto.request.Product.UnitConversionRequest
 import com.antran.Warehouse_management.dto.response.ProductResponse;
 import com.antran.Warehouse_management.entity.Category;
 import com.antran.Warehouse_management.entity.Product;
-import com.antran.Warehouse_management.entity.Unit;
 import com.antran.Warehouse_management.entity.UnitConversion;
 import com.antran.Warehouse_management.exception.AppException;
 import com.antran.Warehouse_management.exception.ErrorCode;
@@ -13,13 +12,11 @@ import com.antran.Warehouse_management.mapper.ProductMapper;
 import com.antran.Warehouse_management.repository.CategoryRepository;
 import com.antran.Warehouse_management.repository.ProductRepository;
 import com.antran.Warehouse_management.repository.UnitConversionRepository;
-import com.antran.Warehouse_management.repository.UnitRepository;
 import com.antran.Warehouse_management.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +30,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
-    UnitRepository unitRepository;
     UnitConversionRepository unitConversionRepository;
 
     @Override

@@ -29,13 +29,13 @@ public class GoodsReceiptDetail {
     @JoinColumn(name = "product_id")
     Product product;
 
-//    @ManyToOne
-//    @JoinColumn(name = "location_id")
-//    Location location;
-
     BigDecimal quantity;
     BigDecimal unitPrice;
     BigDecimal totalPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_conversion_id")
+    UnitConversion unitConversion;
 
     @OneToMany(mappedBy = "goodsReceiptDetail", cascade = CascadeType.ALL, orphanRemoval = true)
     List<InventoryBatch> inventoryBatches;

@@ -1,5 +1,6 @@
 package com.antran.Warehouse_management.dto.response;
 
+import com.antran.Warehouse_management.enums.PaymentStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +21,9 @@ public class GoodsReceiptResponse {
     String supplierName;
     int createdById;
     String createdByName;
+//    BaseInfoResponse createdBy;
     BigDecimal totalAmount;
+    BigDecimal paidAmount;
+    PaymentStatus paymentStatus;
     List<GoodsReceiptDetailResponse> details;
 }
