@@ -10,4 +10,6 @@ import java.util.List;
 public interface InventoryBatchRepository extends JpaRepository<InventoryBatch, Integer> {
     @Query("SELECT b FROM InventoryBatch b WHERE b.goodsReceiptDetail.goodsReceipt.id = :receiptId")
     List<InventoryBatch> findByGoodsReceiptId(@Param("receiptId") int receiptId);
+
+    List<InventoryBatch> findByProductIdOrderByCreatedAtAsc(int productId);
 }

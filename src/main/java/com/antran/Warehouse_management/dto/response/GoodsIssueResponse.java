@@ -1,5 +1,6 @@
 package com.antran.Warehouse_management.dto.response;
 
+import com.antran.Warehouse_management.enums.IssueType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,9 +17,11 @@ public class GoodsIssueResponse {
     int id;
     String issueCode;
     Date issueDate;
-    int customerId;
+    Integer customerId;
     String customerName;
-    String createdBy;
+    String issueType;
+    Integer createdById;
+    String createdByName;
     BigDecimal totalAmount;
-    List<GoodsIssueDetailResponse> goodsIssueDetails;
+    List<GoodsIssueDetailResponse> details;
 }

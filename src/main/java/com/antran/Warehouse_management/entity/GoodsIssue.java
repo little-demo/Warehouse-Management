@@ -29,11 +29,13 @@ public class GoodsIssue {
     @JoinColumn(name = "customer_id")
     Customer customer;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "issue_type")
     IssueType issueType;
     BigDecimal totalAmount; //tính tự động khi thêm mới hoặc cập nhật
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = true)
     User createdBy;
 
     @OneToMany(mappedBy = "goodsIssue", cascade = CascadeType.ALL)

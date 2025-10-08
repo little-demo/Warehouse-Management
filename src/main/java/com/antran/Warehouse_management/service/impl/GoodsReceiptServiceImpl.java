@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,6 +169,7 @@ public class GoodsReceiptServiceImpl implements GoodsReceiptService {
                     .initialQuantity(baseQuantity)
                     .remainingQuantity(baseQuantity)
                     .unitCost(baseUnitPrice)
+                    .createdAt(LocalDateTime.now())
                     .build();
 
             batches.add(batch);

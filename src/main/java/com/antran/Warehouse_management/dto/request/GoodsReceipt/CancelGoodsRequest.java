@@ -1,5 +1,6 @@
-package com.antran.Warehouse_management.dto.request.GoodsIssue;
+package com.antran.Warehouse_management.dto.request.GoodsReceipt;
 
+import com.antran.Warehouse_management.dto.request.GoodsIssue.GoodsIssueDetailRequest;
 import com.antran.Warehouse_management.enums.IssueType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,13 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GoodsIssueRequest {
+public class CancelGoodsRequest {
     String issueCode;
 
-    int customerId;
     int createdById;
     IssueType issueType;    // Loại xuất: BÁN_HÀNG / HỦY_HÀNG / KHÁC
 
-    BigDecimal amountPaid; // Số tiền khách đã thanh toán (nếu có)
-    List<GoodsIssueDetailRequest> details; // Danh sách chi tiết xuất
+    List<CancelGoodsDetailRequest> details; // Danh sách chi tiết xuất
 }
