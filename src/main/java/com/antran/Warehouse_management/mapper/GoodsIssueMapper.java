@@ -1,12 +1,11 @@
 package com.antran.Warehouse_management.mapper;
 
 import com.antran.Warehouse_management.dto.request.GoodsIssue.GoodsIssueRequest;
-import com.antran.Warehouse_management.dto.request.GoodsReceipt.CancelGoodsRequest;
+import com.antran.Warehouse_management.dto.request.GoodsIssue.CancelGoodsRequest;
 import com.antran.Warehouse_management.dto.response.GoodsIssueResponse;
 import com.antran.Warehouse_management.entity.Customer;
 import com.antran.Warehouse_management.entity.GoodsIssue;
 import com.antran.Warehouse_management.entity.User;
-import com.antran.Warehouse_management.enums.IssueType;
 
 import java.util.ArrayList;
 import java.util.Date;

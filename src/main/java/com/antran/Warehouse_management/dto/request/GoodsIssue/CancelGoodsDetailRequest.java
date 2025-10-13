@@ -1,4 +1,4 @@
-package com.antran.Warehouse_management.dto.request.GoodsReceipt;
+package com.antran.Warehouse_management.dto.request.GoodsIssue;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

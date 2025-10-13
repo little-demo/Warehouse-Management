@@ -1,7 +1,10 @@
 package com.antran.Warehouse_management.enums;
 
 public enum LocationType {
-    SHELF,   // kệ
-    BIN,     // thùng
-    CABINET   // tủ
+    KE_LON,
+    KE_NHO,
+    THUNG,
+    PALLET,
+    SAN,
+    KHU_LANH
 }

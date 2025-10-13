@@ -2,7 +2,7 @@ package com.antran.Warehouse_management.controller;
 
 import com.antran.Warehouse_management.dto.ApiResponse;
 import com.antran.Warehouse_management.dto.request.GoodsIssue.GoodsIssueRequest;
-import com.antran.Warehouse_management.dto.request.GoodsReceipt.CancelGoodsRequest;
+import com.antran.Warehouse_management.dto.request.GoodsIssue.CancelGoodsRequest;
 import com.antran.Warehouse_management.dto.response.GoodsIssueResponse;
 import com.antran.Warehouse_management.service.GoodsIssueService;
 import lombok.AccessLevel;

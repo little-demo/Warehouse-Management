@@ -29,10 +29,10 @@ public class LocationServiceImpl implements LocationService {
             throw new AppException(ErrorCode.LOCATION_NAME_ALREADY_EXISTS);
         }
 
-        Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId())
-                .orElseThrow(() -> new AppException(ErrorCode.WAREHOUSE_NOT_EXISTED));
+//        Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId())
+//                .orElseThrow(() -> new AppException(ErrorCode.WAREHOUSE_NOT_EXISTED));
 
-        Location location = LocationMapper.toEntity(request, warehouse);
+        Location location = LocationMapper.toEntity(request);
         return LocationMapper.toResponse(locationRepository.save(location));
     }
 
@@ -49,12 +49,12 @@ public class LocationServiceImpl implements LocationService {
             throw new AppException(ErrorCode.LOCATION_NAME_ALREADY_EXISTS);
         }
 
-        Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId())
-                .orElseThrow(() -> new AppException(ErrorCode.WAREHOUSE_NOT_EXISTED));
+//        Warehouse warehouse = warehouseRepository.findById(request.getWarehouseId())
+//                .orElseThrow(() -> new AppException(ErrorCode.WAREHOUSE_NOT_EXISTED));
 
         location.setName(request.getName());
         location.setType(request.getType());
-        location.setWarehouse(warehouse);
+//        location.setWarehouse(warehouse);
 
         return LocationMapper.toResponse(locationRepository.save(location));
     }

@@ -10,8 +10,8 @@ public class GoodsReceiptMapper {
     public static GoodsReceipt toEntity(GoodsReceiptRequest request) {
         return GoodsReceipt.builder()
                 .receiptCode(request.getReceiptCode())
-                .receiptDate(LocalDateTime.now())
-                .paidAmount(request.getPaidAmount())
+                .receiptDate(request.getReceiptDate())
+//                .paidAmount(request.getPaidAmount())
                 .build();
     }
 
@@ -20,13 +20,13 @@ public class GoodsReceiptMapper {
                 .id(goodsReceipt.getId())
                 .receiptCode(goodsReceipt.getReceiptCode())
                 .receiptDate(goodsReceipt.getReceiptDate())
-                .supplierId(goodsReceipt.getSupplier().getId())
-                .supplierName(goodsReceipt.getSupplier().getName())
+                .partnerId(goodsReceipt.getPartner().getId())
+                .partnerName(goodsReceipt.getPartner().getName())
                 .createdById(goodsReceipt.getCreatedBy().getId())
-                .createdByName(goodsReceipt.getCreatedBy().getUsername())
+                .createdByName(goodsReceipt.getCreatedBy().getFullName())
                 .totalAmount(goodsReceipt.getTotalAmount())
-                .paidAmount(goodsReceipt.getPaidAmount())
-                .paymentStatus(goodsReceipt.getPaymentStatus())
+//                .paidAmount(goodsReceipt.getPaidAmount())
+//                .paymentStatus(goodsReceipt.getPaymentStatus())
                 .details(goodsReceipt.getDetails() == null ? null :
                         goodsReceipt.getDetails().stream()
                                 .map(GoodsReceiptDetailMapper::toResponse)

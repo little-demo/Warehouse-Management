@@ -25,21 +25,18 @@ public class GoodsReceipt {
     String receiptCode;
     LocalDateTime receiptDate;
 
+//    @ManyToOne
+//    @JoinColumn(name = "supplier_id")
+//    Supplier supplier;
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    Supplier supplier;
+    @JoinColumn(name = "partner_id")
+    Partner partner;
 
     BigDecimal totalAmount; //tính tự động khi thêm mới hoặc cập nhật
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     User createdBy;
-
-    BigDecimal paidAmount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
-    PaymentStatus paymentStatus;
 
     @OneToMany(mappedBy = "goodsReceipt", cascade = CascadeType.ALL, orphanRemoval = true)
     List<GoodsReceiptDetail> details = new ArrayList<>();

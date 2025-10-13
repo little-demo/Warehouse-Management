@@ -13,6 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class LocationRequest {
     @NotBlank(message = "LOCATION_NAME_NOT_BE_EMPTY")
     String name;
-    int warehouseId;
+//    int warehouseId;
     LocationType type;
 }

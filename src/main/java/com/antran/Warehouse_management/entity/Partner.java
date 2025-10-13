@@ -1,29 +1,27 @@
 package com.antran.Warehouse_management.entity;
 
-import com.antran.Warehouse_management.enums.LocationType;
+import com.antran.Warehouse_management.enums.PartnerType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "locations")
+@Table(name = "partners")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Location {
+public class Partner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String name;
-
-//    @ManyToOne
-//    @JoinColumn(name = "warehouse_id", nullable = false)
-//    Warehouse warehouse;
-
-    @Enumerated(EnumType.STRING) // lưu enum dưới dạng text thay vì số
-    @Column(nullable = false)
-    LocationType type;
+    String address;
+    String phone;
+    String email;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "partner_type")
+    PartnerType partnerType;
 }

@@ -1,5 +1,6 @@
 package com.antran.Warehouse_management.entity;
 
+import com.antran.Warehouse_management.enums.AdjustmentType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,9 @@ public class InventoryAdjustmentDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
+    @Enumerated(EnumType.STRING)
+    AdjustmentType type;
 
     @ManyToOne
     @JoinColumn(name = "inventory_adjustment_id")

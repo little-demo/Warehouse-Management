@@ -19,7 +19,7 @@ public class COGS {
 
     @ManyToOne
     @JoinColumn(name = "goods_issue_detail_id")
-    GoodsReceiptDetail goodsReceiptDetail;
+    GoodsIssueDetail goodsIssueDetail;
 
     @ManyToOne
     @JoinColumn(name = "inventory_batch_id")

@@ -15,5 +15,5 @@ public class GoodsIssueDetailRequest {
     int unitConversionId;    // Quy đổi đơn vị (nếu có)
 
     BigDecimal quantity;     // Số lượng xuất theo đơn vị người dùng chọn
-    BigDecimal unitPrice;    // Giá xuất theo giá vốn
+    BigDecimal unitPrice;    // Giá bán tính tự động hoặc nhập thủ công
 }

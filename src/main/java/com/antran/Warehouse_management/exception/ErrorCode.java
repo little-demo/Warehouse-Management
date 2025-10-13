@@ -37,8 +37,8 @@ public enum ErrorCode {
     LOCATION_NOT_EXISTED(2013, "Vị trí không tồn tại!", HttpStatus.NOT_FOUND),
     EMAIL_INVALID(2014, "Email không hợp lệ", HttpStatus.BAD_REQUEST),
     PHONE_INVALID(2015, "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0", HttpStatus.BAD_REQUEST),
-    SUPPLIER_NAME_NOT_BLANK(2016, "Tên nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
-    SUPPLIER_PHONE_NOT_BLANK(2017, "Số điện thoại nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
+    NAME_NOT_BLANK(2016, "Tên nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
+    PHONE_NOT_BLANK(2017, "Số điện thoại nhà cung cấp không được để trống", HttpStatus.BAD_REQUEST),
     SUPPLIER_EXISTED(2018, "Tên nhà cung cấp đã tồn tại!", HttpStatus.BAD_REQUEST),
     SUPPLIER_NOT_FOUND(2019, "Nhà cung cấp không tồn tại!", HttpStatus.NOT_FOUND),
     USERNAME_NOT_BLANK(2020, "Username không được để trống", HttpStatus.BAD_REQUEST),
@@ -48,8 +48,8 @@ public enum ErrorCode {
     DOB_INVALID(2024, "Ngày sinh phải là ngày trong quá khứ", HttpStatus.BAD_REQUEST),
     GENDER_NOT_BLANK(2025, "Giới tính không được để trống", HttpStatus.BAD_REQUEST),
     ROLE_NOT_BLANK(2026, "Role không được để trống", HttpStatus.BAD_REQUEST),
-    WAREHOUSE_REQUIRED(2027, "Phải chọn ít nhất một kho cho nhân viên kho", HttpStatus.BAD_REQUEST),
-    WAREHOUSE_NOT_FOUND(2028, "Kho không tồn tại!", HttpStatus.NOT_FOUND),
+    PARTNER_TYPE_NOT_NULL(2027, "Loại đối tác không được để trống", HttpStatus.BAD_REQUEST),
+    PARTNER_NOT_FOUND(2028, "Đối tác không tồn tại!", HttpStatus.NOT_FOUND),
     UNAUTHORIZED_WAREHOUSE_ACCESS(2029, "Bạn không có quyền truy cập kho này", HttpStatus.FORBIDDEN),
     ROLE_NAME_NOT_BE_EMPTY(3001, "Tên vai trò không được để trống", HttpStatus.BAD_REQUEST),
     ROLE_EXISTED(3002, "Tên vai trò đã tồn tại!", HttpStatus.BAD_REQUEST),
@@ -72,6 +72,10 @@ public enum ErrorCode {
     ISSUE_CODE_ALREADY_EXISTS(3019, "Mã phiếu xuất đã tồn tại!", HttpStatus.BAD_REQUEST),
     NOT_ENOUGH_STOCK(3020, "Tồn kho không đủ", HttpStatus.BAD_REQUEST),
     GOODS_ISSUE_NOT_FOUND(3021, "Phiếu xuất kho không tồn tại!", HttpStatus.NOT_FOUND),
+    ADJUSTMENT_NOT_FOUND(3022, "Phiếu điều chỉnh không tồn tại!", HttpStatus.NOT_FOUND),
+    INVALID_QUANTITY(3023, "Số lượng không hợp lệ", HttpStatus.BAD_REQUEST),
+    NOT_NEGATIVE_QUANTITY(3025, "Số lượng thực tế không được âm", HttpStatus.BAD_REQUEST),
+    NO_ADJUSTMENT_DETAIL(3026, "Không thể tạo phiếu trống", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

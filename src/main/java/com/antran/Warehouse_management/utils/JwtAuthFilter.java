@@ -41,15 +41,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                     if (jwtUtil.validateToken(token, userDetails)) {
-//                        List<Integer> warehouseIds = Optional.ofNullable(jwtUtil.extractWarehouseIds(token))
-//                                .orElse(Collections.emptyList());
-
                         CustomUserPrincipal principal = new CustomUserPrincipal(
                                 userDetails.getUsername(),
                                 userDetails.getPassword(),
                                 userDetails.isEnabled(),
                                 userDetails.getAuthorities()
-//                                warehouseIds
                         );
 
                         UsernamePasswordAuthenticationToken authToken =

@@ -1,12 +1,9 @@
-package com.antran.Warehouse_management.dto.request.GoodsReceipt;
+package com.antran.Warehouse_management.dto.request.GoodsIssue;
 
-import com.antran.Warehouse_management.dto.request.GoodsIssue.GoodsIssueDetailRequest;
 import com.antran.Warehouse_management.enums.IssueType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 @Data

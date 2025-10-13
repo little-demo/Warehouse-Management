@@ -1,6 +1,6 @@
 package com.antran.Warehouse_management.dto.response;
 
-import com.antran.Warehouse_management.enums.LocationType;
+import com.antran.Warehouse_management.enums.PartnerType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,9 +9,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LocationResponse {
+public class PartnerResponse {
     int id;
     String name;
-//    String warehouseName;
-    LocationType type;
+    String address;
+    String phone;
+    String email;
+    PartnerType partnerType;
 }

@@ -54,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
                     .ratioToBase(BigDecimal.ONE)
                     .build();
             unitConversionRepository.save(baseConversion);
+            savedProduct.getUnitConversions().add(baseConversion);
 
             // 3. Thêm conversions khác từ request
             if (request.getConversions() != null) {
@@ -68,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
                             .ratioToBase(conv.getRatioToBase())
                             .build();
                     unitConversionRepository.save(conversion);
+                    savedProduct.getUnitConversions().add(conversion);
                 }
             }
 

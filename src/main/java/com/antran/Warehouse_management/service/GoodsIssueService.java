@@ -1,7 +1,7 @@
 package com.antran.Warehouse_management.service;
 
 import com.antran.Warehouse_management.dto.request.GoodsIssue.GoodsIssueRequest;
-import com.antran.Warehouse_management.dto.request.GoodsReceipt.CancelGoodsRequest;
+import com.antran.Warehouse_management.dto.request.GoodsIssue.CancelGoodsRequest;
 import com.antran.Warehouse_management.dto.response.GoodsIssueResponse;
 
 import java.util.List;

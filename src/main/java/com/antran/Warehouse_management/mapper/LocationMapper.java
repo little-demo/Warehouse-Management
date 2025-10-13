@@ -6,12 +6,12 @@ import com.antran.Warehouse_management.entity.Location;
 import com.antran.Warehouse_management.entity.Warehouse;
 
 public class LocationMapper {
-    public static Location toEntity(LocationRequest request, Warehouse warehouse) {
+    public static Location toEntity(LocationRequest request) {
         if (request == null) return null;
         return Location.builder()
                 .name(request.getName())
                 .type(request.getType())
-                .warehouse(warehouse)
+//                .warehouse(warehouse)
                 .build();
     }
 
@@ -21,7 +21,7 @@ public class LocationMapper {
                 .id(location.getId())
                 .name(location.getName())
                 .type(location.getType())
-                .warehouseName(location.getWarehouse().getName())
+//                .warehouseName(location.getWarehouse().getName())
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,7 +14,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GoodsReceiptRequest {
     String receiptCode;
-    int supplierId;
+    LocalDateTime receiptDate;
+    int partnerId;
     int createdById;
     BigDecimal paidAmount;
     List<GoodsReceiptDetailRequest> details;

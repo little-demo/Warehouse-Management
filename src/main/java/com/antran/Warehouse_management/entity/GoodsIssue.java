@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class GoodsIssue {
     Customer customer;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "issue_type")
+    @Column(name = "issue_type")
     IssueType issueType;
     BigDecimal totalAmount; //tính tự động khi thêm mới hoặc cập nhật
 

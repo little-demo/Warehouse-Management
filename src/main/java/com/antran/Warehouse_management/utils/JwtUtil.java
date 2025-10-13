@@ -34,17 +34,7 @@ public class JwtUtil {
                 .map(Role::getName) // Role.name là ERole
                 .toList();
         claims.put("roles", roleNames);
-
-        // Nếu user có role WAREHOUSE_STAFF thì gắn thêm danh sách warehouseId
-        boolean isStaff = user.getRoles().stream()
-                .anyMatch(r -> ERole.WAREHOUSE_STAFF.name().equals(r.getName()));
-
-//        if (isStaff) {
-//            claims.put("warehouseIds", user.getWarehouses()
-//                    .stream()
-//                    .map(Warehouse::getId)
-//                    .toList());
-//        }
+        claims.put("userId", user.getId());
 
         return Jwts.builder()
                 .setSubject(user.getUsername())
@@ -67,12 +57,12 @@ public class JwtUtil {
         return extractClaims(token).getSubject();
     }
 
-    public String extractRole(String token) {
-        return extractClaims(token).get("role", String.class);
+    public Integer extractUserId(String token) {
+        return extractClaims(token).get("userId", Integer.class);
     }
 
-    public List<Integer> extractWarehouseIds(String token) {
-        return extractClaims(token).get("warehouseIds", List.class);
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

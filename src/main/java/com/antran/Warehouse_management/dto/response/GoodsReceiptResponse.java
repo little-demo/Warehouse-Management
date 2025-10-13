@@ -17,13 +17,13 @@ public class GoodsReceiptResponse {
     int id;
     String receiptCode;
     LocalDateTime receiptDate;
-    int supplierId;
-    String supplierName;
+    int partnerId;
+    String partnerName;
     int createdById;
     String createdByName;
 //    BaseInfoResponse createdBy;
     BigDecimal totalAmount;
-    BigDecimal paidAmount;
-    PaymentStatus paymentStatus;
+//    BigDecimal paidAmount;
+//    PaymentStatus paymentStatus;
     List<GoodsReceiptDetailResponse> details;
 }

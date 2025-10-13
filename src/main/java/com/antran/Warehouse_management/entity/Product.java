@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +28,13 @@ public class Product {
     @Builder.Default
     boolean isActive = true;
 
+    float profitMargin; // tỷ lệ lợi nhuận mong muốn, ví dụ 0.2 cho 20%
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     List<UnitConversion> unitConversions = new ArrayList<>();
 }
