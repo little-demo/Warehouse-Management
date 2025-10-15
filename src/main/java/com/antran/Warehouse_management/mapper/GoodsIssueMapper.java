@@ -5,16 +5,18 @@ import com.antran.Warehouse_management.dto.request.GoodsIssue.CancelGoodsRequest
 import com.antran.Warehouse_management.dto.response.GoodsIssueResponse;
 import com.antran.Warehouse_management.entity.Customer;
 import com.antran.Warehouse_management.entity.GoodsIssue;
+import com.antran.Warehouse_management.entity.Partner;
 import com.antran.Warehouse_management.entity.User;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 public class GoodsIssueMapper {
-    public static GoodsIssue toEntity(GoodsIssueRequest request, User user, Customer customer) {
+    public static GoodsIssue toEntity(GoodsIssueRequest request, User user, Partner customer) {
         return GoodsIssue.builder()
                 .issueCode(request.getIssueCode())
-                .issueDate(Date.from(new Date().toInstant()))
+//                .issueDate(Date.from(new Date().toInstant()))
+                .issueDate(request.getIssueDate())
                 .issueType(request.getIssueType())
                 .createdBy(user)
                 .customer(customer)
@@ -42,7 +44,7 @@ public class GoodsIssueMapper {
     public static GoodsIssue toEntity(CancelGoodsRequest request, User user) {
         return GoodsIssue.builder()
                 .issueCode(request.getIssueCode())
-                .issueDate(Date.from(new Date().toInstant()))
+                .issueDate(request.getIssueDate())
                 .issueType(request.getIssueType())
                 .createdBy(user)
                 .details(new ArrayList<>())

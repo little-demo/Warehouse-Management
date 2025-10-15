@@ -25,4 +25,9 @@ public interface InventoryBatchRepository extends JpaRepository<InventoryBatch, 
     // *** THÊM: Tính tổng tồn kho ***
     @Query("SELECT COALESCE(SUM(b.remainingQuantity), 0) FROM InventoryBatch b WHERE b.product.id = :productId")
     BigDecimal calculateTotalStock(@Param("productId") int productId);
+
+    // Lấy danh sách tồn kho theo sản phẩm, sắp xếp theo ngày nhập mới nhất
+    List<InventoryBatch> findByProduct_IdAndRemainingQuantityGreaterThanOrderByCreatedAtDesc(
+            int productId, BigDecimal remainingQuantity
+    );
 }

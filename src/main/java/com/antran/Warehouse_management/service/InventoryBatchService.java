@@ -7,4 +7,5 @@ import java.util.List;
 public interface InventoryBatchService {
     InventoryResponse getInventoryBatchById(int id);
     List<InventoryResponse> getAllInventoryBatches();
+    List<InventoryResponse> getInventoryBatchesByProductId(int productId);
 }

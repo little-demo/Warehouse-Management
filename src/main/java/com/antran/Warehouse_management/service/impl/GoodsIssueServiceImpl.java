@@ -38,6 +38,7 @@ public class GoodsIssueServiceImpl implements GoodsIssueService {
     CustomerServiceImpl customerService;
     UserServiceImpl userService;
     ProductServiceImpl productService;
+    PartnerServiceImpl partnerService;
 
     @Override
     @Transactional
@@ -47,69 +48,63 @@ public class GoodsIssueServiceImpl implements GoodsIssueService {
         }
 
         User user = userService.findUserById(request.getCreatedById());
-        Customer customer = customerService.findCustomerById(request.getCustomerId());
+        Partner customer = partnerService.findPartnerById(request.getCustomerId());
 
         GoodsIssue goodsIssue = GoodsIssueMapper.toEntity(request, user, customer);
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (GoodsIssueDetailRequest detailReq : request.getDetails()) {
-
             Product product = productService.findProductById(detailReq.getProductId());
-            UnitConversion conversion = unitConversionRepository.findById(detailReq.getUnitConversionId())
-                    .orElse(null);
+            InventoryBatch batch = inventoryBatchRepository.findById(detailReq.getInventoryBatchId())
+                    .orElseThrow(() -> new AppException(ErrorCode.INVENTORY_NOT_FOUND));
 
-            //Tính tỷ lệ quy đổi sang đơn vị gốc
-            BigDecimal ratio = (conversion != null)
-                    ? conversion.getRatioToBase()
-                    : BigDecimal.ONE;
-
-            BigDecimal baseQuantityToIssue = detailReq.getQuantity().multiply(ratio);
-            BigDecimal remainingToIssue = baseQuantityToIssue;
-
-            //Lấy danh sách batch theo FIFO
-            List<InventoryBatch> availableBatches = inventoryBatchRepository
-                    .findByProductIdOrderByCreatedAtAsc(product.getId());
-
-            for (InventoryBatch batch : availableBatches) {
-                if (remainingToIssue.compareTo(BigDecimal.ZERO) <= 0) break;
-
-                BigDecimal available = batch.getRemainingQuantity();
-
-                if (available.compareTo(BigDecimal.ZERO) <= 0) continue;
-
-                //Xác định số lượng xuất từ batch này (đơn vị gốc)
-                BigDecimal issueFromThisBatch = available.min(remainingToIssue);
-
-                //Quy đổi lại về đơn vị người nhập
-                BigDecimal displayQuantity = issueFromThisBatch.divide(ratio, 2, RoundingMode.HALF_UP);
-
-                //Cập nhật tồn kho batch
-                batch.setRemainingQuantity(available.subtract(issueFromThisBatch));
-                inventoryBatchRepository.save(batch);
-
-                //Tính tiền xuất
-                BigDecimal totalPrice = detailReq.getUnitPrice().multiply(displayQuantity);
-
-                //Tạo chi tiết phiếu xuất
-                GoodsIssueDetail detail = GoodsIssueDetail.builder()
-                        .goodsIssue(goodsIssue)
-                        .inventoryBatch(batch)
-                        .unitConversion(conversion)
-                        .quantity(displayQuantity)   // theo đơn vị nhập
-                        .unitPrice(detailReq.getUnitPrice())
-                        .totalPrice(totalPrice)
-                        .build();
-
-                goodsIssue.getDetails().add(detail);
-
-                totalAmount = totalAmount.add(totalPrice);
-                remainingToIssue = remainingToIssue.subtract(issueFromThisBatch);
+            if (!(batch.getProduct().getId() == product.getId())) {
+                throw new AppException(ErrorCode.BATCH_PRODUCT_MISMATCH);
             }
 
-            //Kiểm tra nếu vẫn còn số lượng chưa xuất hết
-            if (remainingToIssue.compareTo(BigDecimal.ZERO) > 0) {
+            UnitConversion conversion = null;
+            BigDecimal ratio = BigDecimal.ONE;
+
+            if (detailReq.getUnitConversionId() != null) {
+                conversion = unitConversionRepository.findById(detailReq.getUnitConversionId())
+                        .orElseThrow(() -> new AppException(ErrorCode.UNIT_NOT_FOUND));
+                ratio = conversion.getRatioToBase();
+            }
+
+            // Quy đổi sang đơn vị gốc để trừ kho
+            BigDecimal baseQuantityToIssue = detailReq.getQuantity().multiply(ratio);
+
+            if (batch.getRemainingQuantity().compareTo(baseQuantityToIssue) < 0) {
                 throw new AppException(ErrorCode.NOT_ENOUGH_STOCK);
             }
+
+            // --- Tính giá xuất ---
+            BigDecimal baseUnitPrice = batch.getUnitCost(); // Giá theo đơn vị gốc (vd: theo chai)
+            BigDecimal displayUnitPriceRaw = baseUnitPrice.multiply(ratio); // Giá theo đơn vị hiển thị (vd: thùng)
+
+            // Làm tròn tổng tiền trước, để ra số đẹp (ví dụ 200,000)
+            BigDecimal rawTotal = displayUnitPriceRaw.multiply(detailReq.getQuantity());
+            BigDecimal roundedTotalPrice = rawTotal.setScale(0, RoundingMode.HALF_UP); // Làm tròn đến đồng
+
+            // Tính lại đơn giá hiển thị từ tổng tiền đã làm tròn
+            BigDecimal roundedUnitPrice = roundedTotalPrice.divide(detailReq.getQuantity(), 2, RoundingMode.HALF_UP);
+
+            // Cập nhật tồn kho
+            batch.setRemainingQuantity(batch.getRemainingQuantity().subtract(baseQuantityToIssue));
+            inventoryBatchRepository.save(batch);
+
+            // Ghi chi tiết
+            GoodsIssueDetail detail = GoodsIssueDetail.builder()
+                    .goodsIssue(goodsIssue)
+                    .inventoryBatch(batch)
+                    .unitConversion(conversion)
+                    .quantity(detailReq.getQuantity())
+                    .unitPrice(roundedUnitPrice)        // Giá hiển thị (đã làm tròn)
+                    .totalPrice(roundedTotalPrice)      // Tổng giá (đã làm tròn)
+                    .build();
+
+            goodsIssue.getDetails().add(detail);
+            totalAmount = totalAmount.add(roundedTotalPrice);
         }
 
         goodsIssue.setTotalAmount(totalAmount);

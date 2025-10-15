@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GoodsIssueRequest {
     String issueCode;
-
+    LocalDateTime issueDate;
     int customerId;
     int createdById;
     IssueType issueType;    // Loại xuất: BÁN_HÀNG / HỦY_HÀNG / KHÁC

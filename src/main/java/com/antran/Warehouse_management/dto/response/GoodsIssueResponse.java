@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,7 +16,7 @@ import java.util.List;
 public class GoodsIssueResponse {
     int id;
     String issueCode;
-    Date issueDate;
+    LocalDateTime issueDate;
     Integer customerId;
     String customerName;
     String issueType;

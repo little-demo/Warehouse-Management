@@ -50,4 +50,12 @@ public class GoodsIssueController {
                 .message("Lấy phiếu xuất kho thành công!")
                 .build();
     }
+
+    @DeleteMapping("/{id}")
+    ApiResponse<Void> deleteGoodsIssue(@PathVariable int id) {
+        goodsIssueService.deleteGoodsIssue(id);
+        return ApiResponse.<Void>builder()
+                .message("Xóa phiếu xuất kho thành công!")
+                .build();
+    }
 }

@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -29,5 +30,16 @@ public class InventoryBatchServiceImpl implements InventoryBatchService {
     @Override
     public List<InventoryResponse> getAllInventoryBatches() {
         return inventoryBatchRepository.findAll().stream().map(InventoryResponse::new).toList();
+    }
+
+    @Override
+    public List<InventoryResponse> getInventoryBatchesByProductId(int productId) {
+        return inventoryBatchRepository
+                .findByProduct_IdAndRemainingQuantityGreaterThanOrderByCreatedAtDesc(
+                        productId, BigDecimal.ZERO
+                )
+                .stream()
+                .map(InventoryResponse::new)
+                .toList();
     }
 }

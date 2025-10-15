@@ -76,6 +76,7 @@ public enum ErrorCode {
     INVALID_QUANTITY(3023, "Số lượng không hợp lệ", HttpStatus.BAD_REQUEST),
     NOT_NEGATIVE_QUANTITY(3025, "Số lượng thực tế không được âm", HttpStatus.BAD_REQUEST),
     NO_ADJUSTMENT_DETAIL(3026, "Không thể tạo phiếu trống", HttpStatus.BAD_REQUEST),
+    BATCH_PRODUCT_MISMATCH(3027, "Sản phẩm trong lô không khớp với sản phẩm trong chi tiết phiếu", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

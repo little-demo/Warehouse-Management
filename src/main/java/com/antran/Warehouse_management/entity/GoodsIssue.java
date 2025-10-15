@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class GoodsIssue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String issueCode;
-    Date issueDate;
+    LocalDateTime issueDate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    Customer customer;
+    Partner customer;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "issue_type")

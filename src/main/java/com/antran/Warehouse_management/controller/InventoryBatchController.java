@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,14 @@ public class InventoryBatchController {
         return ApiResponse.<List<InventoryResponse>>builder()
                 .result(inventoryBatchService.getAllInventoryBatches())
                 .message("Lấy danh sách lô hàng tồn kho thành công!")
+                .build();
+    }
+
+    @GetMapping("/product/{productId}")
+    ApiResponse<List<InventoryResponse>> getInventoryBatchesByProductId(@PathVariable int productId) {
+        return ApiResponse.<List<InventoryResponse>>builder()
+                .result(inventoryBatchService.getInventoryBatchesByProductId(productId))
+                .message("Lấy danh sách lô hàng tồn kho theo sản phẩm thành công!")
                 .build();
     }
 }

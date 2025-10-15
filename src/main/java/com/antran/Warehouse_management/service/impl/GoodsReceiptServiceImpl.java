@@ -46,22 +46,17 @@ public class GoodsReceiptServiceImpl implements GoodsReceiptService {
     @Override
     @Transactional
     public GoodsReceiptResponse createGoodsReceipt(GoodsReceiptRequest request) {
-        // 1️⃣ Kiểm tra trùng mã phiếu
         if (goodsReceiptRepository.existsByReceiptCode(request.getReceiptCode())) {
             throw new AppException(ErrorCode.RECEIPT_CODE_ALREADY_EXISTS);
         }
 
-        // 2️⃣ Lấy thông tin người tạo & nhà cung cấp
         User user = userService.findUserById(request.getCreatedById());
         Partner partner = partnerService.findPartnerById(request.getPartnerId());
-//        Supplier supplier = supplierService.findSupplierById(request.getSupplierId());
 
-        // 3️⃣ Map sang entity phiếu nhập
         GoodsReceipt goodsReceipt = GoodsReceiptMapper.toEntity(request);
         goodsReceipt.setCreatedBy(user);
         goodsReceipt.setPartner(partner);
 
-        // 4️⃣ Danh sách chi tiết phiếu nhập
         List<GoodsReceiptDetail> details = new ArrayList<>();
         List<InventoryBatch> batches = new ArrayList<>();
 
@@ -74,7 +69,7 @@ public class GoodsReceiptServiceImpl implements GoodsReceiptService {
             Product product = productService.findProductById(detailReq.getProductId());
             detail.setProduct(product);
 
-            // ✅ Lấy conversion
+            // Lấy conversion
             UnitConversion conversion = unitConversionRepository.findById(detailReq.getUnitConversionId())
                     .orElse(null);
 
@@ -82,16 +77,28 @@ public class GoodsReceiptServiceImpl implements GoodsReceiptService {
                 throw new AppException(ErrorCode.UNIT_NOT_FOUND);
             }
 
-            detail.setUnitConversion(conversion); // ⚡ Gán conversion cho detail
+            detail.setUnitConversion(conversion); // Gán conversion cho detail
 
             BigDecimal ratio = conversion.getRatioToBase();
-            BigDecimal baseQuantity = detailReq.getQuantity().multiply(ratio);
-            BigDecimal baseUnitPrice = detailReq.getUnitPrice().divide(ratio, 2, RoundingMode.HALF_UP);
+//            BigDecimal baseQuantity = detailReq.getQuantity().multiply(ratio);
+//            BigDecimal baseUnitPrice = detailReq.getUnitPrice().divide(ratio, 2, RoundingMode.HALF_UP);
 
-            detail.setTotalPrice(detailReq.getUnitPrice().multiply(detailReq.getQuantity()));
+            // ⚙️ Làm tròn chuẩn 2 chữ số sau dấu phẩy (đảm bảo nhất quán)
+            BigDecimal baseQuantity = detailReq.getQuantity().multiply(ratio)
+                    .setScale(2, RoundingMode.HALF_UP);
+
+            BigDecimal totalPrice = detailReq.getUnitPrice()
+                    .multiply(detailReq.getQuantity())
+                    .setScale(2, RoundingMode.HALF_UP);
+
+            // ✅ Quy đổi giá về đơn vị gốc (có thể ra số lẻ nhỏ)
+            BigDecimal baseUnitPrice = totalPrice.divide(baseQuantity, 4, RoundingMode.HALF_UP);
+
+//            detail.setTotalPrice(detailReq.getUnitPrice().multiply(detailReq.getQuantity()));
+            detail.setTotalPrice(totalPrice);
             details.add(detail);
 
-            // ⚡ Batch
+            // Batch
             InventoryBatch batch = InventoryBatch.builder()
                     .batchCode(request.getReceiptCode() + "-" + index++)
                     .product(product)
@@ -108,22 +115,17 @@ public class GoodsReceiptServiceImpl implements GoodsReceiptService {
 
         goodsReceipt.setDetails(details);
 
-        // 5️⃣ Tính tổng tiền phiếu nhập
+        // Tính tổng tiền phiếu nhập
+//        BigDecimal totalAmount = details.stream()
+//                .map(GoodsReceiptDetail::getTotalPrice)
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalAmount = details.stream()
                 .map(GoodsReceiptDetail::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
         goodsReceipt.setTotalAmount(totalAmount);
 
-        // 6️⃣ Xác định trạng thái thanh toán
-//        if (goodsReceipt.getPaidAmount().compareTo(BigDecimal.ZERO) == 0) {
-//            goodsReceipt.setPaymentStatus(PaymentStatus.UNPAID);
-//        } else if (goodsReceipt.getPaidAmount().compareTo(goodsReceipt.getTotalAmount()) < 0) {
-//            goodsReceipt.setPaymentStatus(PaymentStatus.PARTIALLY_PAID);
-//        } else {
-//            goodsReceipt.setPaymentStatus(PaymentStatus.PAID);
-//        }
-
-        // 7️⃣ Lưu phiếu nhập và chi tiết
+        // Lưu phiếu nhập và chi tiết
         GoodsReceipt savedReceipt = goodsReceiptRepository.save(goodsReceipt);
         inventoryBatchRepository.saveAll(batches);
 
