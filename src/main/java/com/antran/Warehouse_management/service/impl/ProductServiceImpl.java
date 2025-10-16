@@ -10,6 +10,7 @@ import com.antran.Warehouse_management.exception.AppException;
 import com.antran.Warehouse_management.exception.ErrorCode;
 import com.antran.Warehouse_management.mapper.ProductMapper;
 import com.antran.Warehouse_management.repository.CategoryRepository;
+import com.antran.Warehouse_management.repository.GoodsReceiptDetailRepository;
 import com.antran.Warehouse_management.repository.ProductRepository;
 import com.antran.Warehouse_management.repository.UnitConversionRepository;
 import com.antran.Warehouse_management.service.ProductService;
@@ -21,7 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
     UnitConversionRepository unitConversionRepository;
+    GoodsReceiptDetailRepository goodsReceiptDetailRepository;
 
     @Override
     @Transactional
@@ -85,6 +91,56 @@ public class ProductServiceImpl implements ProductService {
         return ProductMapper.toResponse(findProductById(id));
     }
 
+//    @Override
+//    @Transactional
+//    public ProductResponse updateProduct(int id, ProductRequest request) {
+//        Product product = findProductById(id);
+//
+//        if (!product.getSku().equals(request.getSku()) &&
+//                productRepository.existsBySku(request.getSku())) {
+//            throw new AppException(ErrorCode.PRODUCT_SKU_ALREADY_EXISTS);
+//        }
+//
+//        Category category = categoryRepository.findById(request.getCategoryId())
+//                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
+//
+//        product.setSku(request.getSku());
+//        product.setName(request.getName());
+//        product.setMinStockLevel(request.getMinStockLevel());
+//        product.setCategory(category);
+//        product.setBaseUnit(request.getBaseUnit());
+//
+//        // update baseUnit trong conversions
+//        UnitConversion baseConv = unitConversionRepository.findByProductIdAndRatioToBase(id, BigDecimal.ONE)
+//                .orElseThrow(() -> new AppException(ErrorCode.UNIT_NOT_FOUND));
+//
+//        if (!baseConv.getUnitName().equalsIgnoreCase(request.getBaseUnit())) {
+//            baseConv.setUnitName(request.getBaseUnit()); // đổi tên baseUnit
+//            unitConversionRepository.save(baseConv);
+//        }
+//
+//        // update các conversions khác
+//        if (request.getConversions() != null) {
+//            // Xoá conversions cũ (trừ baseUnit)
+//            unitConversionRepository.deleteByProductIdAndRatioToBaseNot(id, BigDecimal.ONE);
+//
+//            // Insert lại conversions từ request
+//            for (UnitConversionRequest conv : request.getConversions()) {
+//                if (conv.getUnitName().equalsIgnoreCase(request.getBaseUnit())) {
+//                    throw new AppException(ErrorCode.UNIT_ALREADY_EXISTS_AS_BASE);
+//                }
+//
+//                UnitConversion conversion = UnitConversion.builder()
+//                        .product(product)
+//                        .unitName(conv.getUnitName())
+//                        .ratioToBase(conv.getRatioToBase())
+//                        .build();
+//                unitConversionRepository.save(conversion);
+//            }
+//        }
+//
+//        return ProductMapper.toResponse(productRepository.save(product));
+//    }
     @Override
     @Transactional
     public ProductResponse updateProduct(int id, ProductRequest request) {
@@ -104,37 +160,66 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         product.setBaseUnit(request.getBaseUnit());
 
-        // update baseUnit trong conversions
+        // Update base unit
         UnitConversion baseConv = unitConversionRepository.findByProductIdAndRatioToBase(id, BigDecimal.ONE)
                 .orElseThrow(() -> new AppException(ErrorCode.UNIT_NOT_FOUND));
 
         if (!baseConv.getUnitName().equalsIgnoreCase(request.getBaseUnit())) {
-            baseConv.setUnitName(request.getBaseUnit()); // đổi tên baseUnit
+            baseConv.setUnitName(request.getBaseUnit());
             unitConversionRepository.save(baseConv);
         }
 
-        // update các conversions khác
+        // Đồng bộ các conversion còn lại
         if (request.getConversions() != null) {
-            // Xoá conversions cũ (trừ baseUnit)
-            unitConversionRepository.deleteByProductIdAndRatioToBaseNot(id, BigDecimal.ONE);
+            List<UnitConversion> existingConversions =
+                    unitConversionRepository.findByProductIdAndRatioToBaseNot(id, BigDecimal.ONE);
 
-            // Insert lại conversions từ request
-            for (UnitConversionRequest conv : request.getConversions()) {
-                if (conv.getUnitName().equalsIgnoreCase(request.getBaseUnit())) {
+            // Map hiện tại để tra nhanh theo tên đơn vị
+            Map<String, UnitConversion> existingMap = existingConversions.stream()
+                    .collect(Collectors.toMap(UnitConversion::getUnitName, uc -> uc, (a, b) -> a));
+
+            Set<String> incomingNames = new HashSet<>();
+
+            for (UnitConversionRequest convReq : request.getConversions()) {
+                incomingNames.add(convReq.getUnitName());
+
+                // Đơn vị trùng với baseUnit => lỗi
+                if (convReq.getUnitName().equalsIgnoreCase(request.getBaseUnit())) {
                     throw new AppException(ErrorCode.UNIT_ALREADY_EXISTS_AS_BASE);
                 }
 
-                UnitConversion conversion = UnitConversion.builder()
-                        .product(product)
-                        .unitName(conv.getUnitName())
-                        .ratioToBase(conv.getRatioToBase())
-                        .build();
-                unitConversionRepository.save(conversion);
+                UnitConversion existing = existingMap.get(convReq.getUnitName());
+                if (existing != null) {
+                    // Cập nhật nếu khác
+                    if (existing.getRatioToBase().compareTo(convReq.getRatioToBase()) != 0) {
+                        existing.setRatioToBase(convReq.getRatioToBase());
+                        unitConversionRepository.save(existing);
+                    }
+                } else {
+                    // Thêm mới
+                    UnitConversion newConv = UnitConversion.builder()
+                            .product(product)
+                            .unitName(convReq.getUnitName())
+                            .ratioToBase(convReq.getRatioToBase())
+                            .build();
+                    unitConversionRepository.save(newConv);
+                }
+            }
+
+            // Xóa các conversion không còn trong request (nếu chưa từng được dùng)
+            for (UnitConversion oldConv : existingConversions) {
+                if (!incomingNames.contains(oldConv.getUnitName())) {
+                    boolean inUse = goodsReceiptDetailRepository.existsByUnitConversionId(oldConv.getId());
+                    if (!inUse) {
+                        unitConversionRepository.delete(oldConv);
+                    }
+                }
             }
         }
 
         return ProductMapper.toResponse(productRepository.save(product));
     }
+
 
     @Override
     public List<ProductResponse> getAllProducts() {

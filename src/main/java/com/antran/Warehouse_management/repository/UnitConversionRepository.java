@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface UnitConversionRepository extends JpaRepository<UnitConversion, Integer> {
@@ -18,4 +19,6 @@ public interface UnitConversionRepository extends JpaRepository<UnitConversion, 
     @Query("DELETE FROM UnitConversion uc WHERE uc.product.id = :productId AND uc.ratioToBase <> :baseRatio")
     void deleteByProductIdAndRatioToBaseNot(@Param("productId") int productId,
                                             @Param("baseRatio") BigDecimal baseRatio);
+
+    List<UnitConversion> findByProductIdAndRatioToBaseNot(int productId, BigDecimal baseRatio);
 }

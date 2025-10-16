@@ -29,6 +29,7 @@ public class GoodsIssueDetailMapper {
                 .totalPrice(detail.getTotalPrice())
                 .baseQuantity(baseQty)
                 .baseUnitPrice(basePrice)
+                .locationName(detail.getInventoryBatch().getLocation().getName())
                 .build();
     }
 }

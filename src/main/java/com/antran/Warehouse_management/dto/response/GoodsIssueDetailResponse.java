@@ -20,4 +20,5 @@ public class GoodsIssueDetailResponse {
     BigDecimal conversionRatio;
     BigDecimal baseQuantity;
     BigDecimal baseUnitPrice;
+    String locationName;
 }

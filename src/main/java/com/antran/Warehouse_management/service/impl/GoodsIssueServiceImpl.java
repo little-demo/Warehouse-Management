@@ -126,14 +126,27 @@ public class GoodsIssueServiceImpl implements GoodsIssueService {
     }
 
     @Override
+    @Transactional
     public void deleteGoodsIssue(int id) {
         GoodsIssue goodsIssue = findGoodsIssueById(id);
 
         for (GoodsIssueDetail detail : goodsIssue.getDetails()) {
             InventoryBatch batch = detail.getInventoryBatch();
-            BigDecimal returnedQty = detail.getQuantity();
+            UnitConversion conversion = detail.getUnitConversion();
 
-            batch.setRemainingQuantity(batch.getRemainingQuantity().add(returnedQty));
+            // Nếu conversion == null => dùng base unit (tỷ lệ 1)
+            BigDecimal ratio = (conversion != null) ? conversion.getRatioToBase() : BigDecimal.ONE;
+
+            // Quy đổi số lượng về đơn vị cơ bản
+            BigDecimal qtyInBase = detail.getQuantity().multiply(ratio);
+
+            log.info("before restore {} (base unit) to batch {}", qtyInBase, batch.getBatchCode());
+
+            // Cộng lại vào số lượng tồn kho
+            batch.setRemainingQuantity(batch.getRemainingQuantity().add(qtyInBase));
+
+            log.info("after restore {} (base unit) to batch {}", qtyInBase, batch.getBatchCode());
+
             inventoryBatchRepository.save(batch);
         }
 
