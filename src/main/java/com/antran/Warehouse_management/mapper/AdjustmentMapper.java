@@ -13,6 +13,7 @@ import java.util.List;
 public class AdjustmentMapper {
     public static InventoryAdjustment toEntity(AdjustmentRequest request, User user) {
         return InventoryAdjustment.builder()
+                .code(request.getCode())
                 .adjustmentDate(LocalDateTime.now())
                 .createdBy(user)
                 .isCancelled(false)
@@ -22,6 +23,7 @@ public class AdjustmentMapper {
     public static AdjustmentResponse toResponse(InventoryAdjustment entity) {
         return AdjustmentResponse.builder()
                 .id(entity.getId())
+                .code(entity.getCode())
                 .adjustmentDate(entity.getAdjustmentDate())
                 .totalDifference(entity.getTotalDifference())
                 .createdById(entity.getCreatedBy().getId())

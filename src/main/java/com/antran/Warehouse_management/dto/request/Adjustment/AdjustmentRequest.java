@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdjustmentRequest {
+    String code;
     int createdBy; // user id
 
     List<AdjustmentDetailRequest> details;

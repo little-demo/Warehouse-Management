@@ -21,7 +21,8 @@ public class InventoryAdjustment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
+    @Column(unique = true, nullable = false)
+    String code;
     LocalDateTime adjustmentDate;
     BigDecimal totalDifference; //tính tự động khi thêm mới hoặc cập nhật
 

@@ -43,4 +43,12 @@ public class InventoryBatchController {
                 .message("Lấy danh sách lô hàng tồn kho theo sản phẩm thành công!")
                 .build();
     }
+
+    @GetMapping("/batch/{batchCode}")
+    ApiResponse<InventoryResponse> getInventoryBatchByBatchCode(@PathVariable String batchCode) {
+        return ApiResponse.<InventoryResponse>builder()
+                .result(inventoryBatchService.getInventoryBatchByBatchCode(batchCode))
+                .message("Lấy lô hàng tồn kho theo mã lô thành công!")
+                .build();
+    }
 }

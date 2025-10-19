@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface InventoryBatchRepository extends JpaRepository<InventoryBatch, Integer> {
     @Query("SELECT b FROM InventoryBatch b WHERE b.goodsReceiptDetail.goodsReceipt.id = :receiptId")
@@ -30,4 +31,6 @@ public interface InventoryBatchRepository extends JpaRepository<InventoryBatch, 
     List<InventoryBatch> findByProduct_IdAndRemainingQuantityGreaterThanOrderByCreatedAtDesc(
             int productId, BigDecimal remainingQuantity
     );
+
+    Optional<InventoryBatch> findByBatchCode(String batchCode);
 }

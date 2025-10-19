@@ -70,7 +70,8 @@ public class AdjustmentServiceImpl implements AdjustmentService {
             } else if (diffQty.compareTo(BigDecimal.ZERO) < 0) {
                 type = AdjustmentType.DECREASE;
             } else {
-                continue;
+                type = AdjustmentType.NO_CHANGE;
+//                continue;
             }
 
             BigDecimal totalDiff = diffQty.multiply(batch.getUnitCost());

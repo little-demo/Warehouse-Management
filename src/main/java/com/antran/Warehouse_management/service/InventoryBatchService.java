@@ -8,4 +8,5 @@ public interface InventoryBatchService {
     InventoryResponse getInventoryBatchById(int id);
     List<InventoryResponse> getAllInventoryBatches();
     List<InventoryResponse> getInventoryBatchesByProductId(int productId);
+    InventoryResponse getInventoryBatchByBatchCode(String batchCode);
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AdjustmentResponse {
     int id;
+    String code;
     LocalDateTime adjustmentDate;
     BigDecimal totalDifference;
 

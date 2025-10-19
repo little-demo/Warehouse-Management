@@ -2,5 +2,6 @@ package com.antran.Warehouse_management.enums;
 
 public enum AdjustmentType {
     INCREASE,  // Điều chỉnh tăng hàng
-    DECREASE  // Điều chỉnh giảm hàng
+    DECREASE,  // Điều chỉnh giảm hàng
+    NO_CHANGE  // Không thay đổi
 }
